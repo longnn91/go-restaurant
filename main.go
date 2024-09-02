@@ -1,16 +1,10 @@
 package main
 
 import (
-	"gogo/modules/auth/middleware"
 	authModal "gogo/modules/auth/model"
-	auth "gogo/modules/auth/transport"
-	food "gogo/modules/food/controller"
-	menu "gogo/modules/menu/controller"
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -41,38 +35,8 @@ func main() {
 	// db.Migrator().DropTable(&authModal.Users{})
 
 	//Config API use gin
-	r := gin.Default()
-	v1 := r.Group("/v1")
+	r := SetupRouter(db)
 
-	foodRouter := v1.Group("/food").Use(middleware.AuthMiddleware)
-	{
-		foodRouter.POST("/", food.CreateFood(db))
-		foodRouter.GET("/", food.GetFoods(db))
-		foodRouter.GET("/:id", food.GetFoodById(db))
-		foodRouter.PUT("/:id", food.UpdateFood(db))
-		foodRouter.DELETE("/:id", food.DeleteFood(db))
-	}
-
-	menuRouter := v1.Group("/menu").Use(middleware.AuthMiddleware)
-	{
-		menuRouter.POST("/", menu.CreateMenu(db))
-		menuRouter.GET("/", menu.GetMenus(db))
-		menuRouter.GET("/:id", menu.GetMenuById(db))
-		menuRouter.PUT("/:id", menu.UpdateMenu(db))
-		menuRouter.DELETE("/:id", menu.DeleteMenu(db))
-	}
-
-	authRouter := v1.Group("/auth")
-	{
-		authRouter.POST("/login", auth.Login(db))
-		authRouter.POST("/register", auth.Register(db))
-	}
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
 	server_err := r.Run(":" + os.Getenv("PORT")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	if server_err != nil {
 		log.Fatal("Error loading .env file", server_err)

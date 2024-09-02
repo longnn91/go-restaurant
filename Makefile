@@ -11,6 +11,19 @@ migrateup:
 	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" -verbose up
 
 migratedown:
-	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data" -verbose down
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" -verbose down 1
 
-.PHONY: mysql createdb dropdb migrateup migratedown
+rollback:
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" -verbose down 1
+
+forceup:
+	@read -p "Enter version to force migrate up to: " version; \
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" force $$version; \
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" -verbose up $$version
+
+forcedown:
+	@read -p "Enter version to force migrate down to: " version; \
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" force $$version; \
+	migrate -path db/migration -database "mysql://root:be123@@tcp(127.0.0.1:3308)/go-restaurant-data?charset=utf8mb4&parseTime=True&loc=Local" -verbose down $$version
+
+.PHONY: mysql createdb dropdb migrateup migratedown rollback forceup forcedown
