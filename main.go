@@ -5,6 +5,7 @@ import (
 	authModal "gogo/modules/auth/model"
 	auth "gogo/modules/auth/transport"
 	food "gogo/modules/food/controller"
+	menu "gogo/modules/menu/controller"
 	"log"
 	"net/http"
 	"os"
@@ -50,6 +51,15 @@ func main() {
 		foodRouter.GET("/:id", food.GetFoodById(db))
 		foodRouter.PUT("/:id", food.UpdateFood(db))
 		foodRouter.DELETE("/:id", food.DeleteFood(db))
+	}
+
+	menuRouter := v1.Group("/menu").Use(middleware.AuthMiddleware)
+	{
+		menuRouter.POST("/", menu.CreateMenu(db))
+		menuRouter.GET("/", menu.GetMenus(db))
+		menuRouter.GET("/:id", menu.GetMenuById(db))
+		menuRouter.PUT("/:id", menu.UpdateMenu(db))
+		menuRouter.DELETE("/:id", menu.DeleteMenu(db))
 	}
 
 	authRouter := v1.Group("/auth")
