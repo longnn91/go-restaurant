@@ -46,6 +46,10 @@ func main() {
 	foodRouter := v1.Group("/food").Use(middleware.AuthMiddleware)
 	{
 		foodRouter.POST("/", food.CreateFood(db))
+		foodRouter.GET("/", food.GetFoods(db))
+		foodRouter.GET("/:id", food.GetFoodById(db))
+		foodRouter.PUT("/:id", food.UpdateFood(db))
+		foodRouter.DELETE("/:id", food.DeleteFood(db))
 	}
 
 	authRouter := v1.Group("/auth")

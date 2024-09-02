@@ -12,7 +12,7 @@ var (
 )
 
 type Users struct {
-	common.SQLModel
+	common.SQLModelInit
 	Username    string `json:"username" form:"username" gorm:"column:username;not null;unique"`
 	Password    string `json:"password" form:"password" gorm:"column:password;not null"`
 	FirstName   string `json:"first_name" form:"first_name" gorm:"column:first_name"`

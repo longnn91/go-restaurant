@@ -3,17 +3,17 @@ CREATE TABLE `users` (
   `username` varchar(50) PRIMARY KEY NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `phone_number` varchar[12],
-  `bio` varchar[500],
+  `phone_number` varchar(12),
+  `bio` varchar(500),
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `menus` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `categories` (
@@ -21,7 +21,7 @@ CREATE TABLE `categories` (
   `name` varchar(255) NOT NULL,
   `menu_id` bigint NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `foods` (
@@ -32,14 +32,14 @@ CREATE TABLE `foods` (
   `menu_id` bigint NOT NULL,
   `category_id` bigint NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `orders` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,
   `user_note` varchar(500),
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `order_items` (
@@ -48,7 +48,7 @@ CREATE TABLE `order_items` (
   `food_id` bigint NOT NULL,
   `unit` int NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT (now()),
-  `updated_at` timestamp NOT NULL DEFAULT (now())
+  `updated_at` timestamp NOT NULL DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
 );
 
 CREATE TABLE `invoice` (
