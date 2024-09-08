@@ -3,6 +3,9 @@ package main
 import (
 	"gogo/modules/auth/middleware"
 	auth "gogo/modules/auth/transport"
+
+	// handlers "gogo/internal/http/server/handlers"
+
 	category "gogo/modules/category/controller"
 	food "gogo/modules/food/controller"
 	menu "gogo/modules/menu/controller"
@@ -14,6 +17,8 @@ import (
 
 // SetupRouter initializes and returns a Gin Engine with all the routes configured
 func SetupRouter(db *gorm.DB) *gin.Engine {
+	// userRepo := &usecases.UserUsecase{Repo: repository.UserRepository{DB: db}}
+
 	r := gin.Default()
 
 	v1 := r.Group("/v1")
@@ -58,6 +63,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	{
 		authRouter.POST("/login", auth.Login(db))
 		authRouter.POST("/register", auth.Register(db))
+		// authRouter.POST("/login", handlers.Login(userRepo))
+		// authRouter.POST("/register", handlers.Register(userRepo))
 	}
 
 	r.GET("/ping", func(c *gin.Context) {

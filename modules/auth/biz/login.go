@@ -11,12 +11,13 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func createToken(username string) (string, error) {
+func createToken(userData *model.Users) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": username,                              // Subject (user identifier)
-		"aud": "user",                                // Audience (user role)
-		"exp": time.Now().Add(time.Hour * 60).Unix(), // Expiration time
-		"iat": time.Now().Unix(),                     // Issued at
+		"sub":    userData.Username,
+		"userId": userData.Id,                           // Subject (user identifier)
+		"aud":    "user",                                // Audience (user role)
+		"exp":    time.Now().Add(time.Hour * 60).Unix(), // Expiration time
+		"iat":    time.Now().Unix(),                     // Issued at
 	})
 
 	secretKey := os.Getenv("SECRET_KEY")
@@ -74,7 +75,7 @@ func (biz *getUserBiz) GetTokenByLogin(ctx context.Context, userData *model.User
 		return "", err
 	}
 
-	if token, err := createToken(userData.Username); match && err == nil {
+	if token, err := createToken(data); match && err == nil {
 		return token, nil
 	} else {
 		return "", err
